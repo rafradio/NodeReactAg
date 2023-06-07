@@ -29,6 +29,7 @@ const AssideMain = (props) => {
         setData(dataTableNew);
         console.log("Hello world");
         console.log(dataT);
+        takeData();
     }
 
     return (
@@ -45,6 +46,16 @@ const AssideMain = (props) => {
             </div>
         </UserContext.Provider>
     )
+}
+
+const takeData = async () => {
+    try {
+        const response = await fetch("http://localhost:8080/data");
+        const textData = await response.json();
+        console.log("React ", textData);
+      } catch (error) {
+        console.error(error);
+      }
 }
 
 
