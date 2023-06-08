@@ -19,12 +19,14 @@ const AppAg = (props) => {
   // const [rowData, setData] = useState([]);
   var rowData = dataTable;
 
-  
-  const [columnDefs, setColumns] = useState([
-      { field: 'make' },
-      { field: 'model' },
-      { field: 'price' }
-  ]);
+  let columsName = props.columsName;
+  // const [columnDefs, setColumns] = useState([
+  //     { field: 'id' },
+  //     { field: 'firstName' },
+  //     { field: 'lastName' }
+  // ]);
+
+  // const [columnDefs, setColumns] = useState([]);
 
   let myData = props.data;
 
@@ -37,8 +39,8 @@ const AppAg = (props) => {
         <Button variant="contained">Contained</Button>
         <div className="ag-theme-alpine grid_style" style={{height: 400, width: 600}}>
             <AgGridReact
-                rowData={rowData}
-                columnDefs={columnDefs}>
+                rowData={myData}
+                columnDefs={columsName}>
             </AgGridReact>
         </div>
         <Button variant="contained">Contained</Button>

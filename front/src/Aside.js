@@ -13,46 +13,84 @@ import AppAg from './App';
 const UserContext = createContext();
 
 const AssideMain = (props) => {
+    let columnsName = [
+        { field: 'id' },
+        { field: 'firstName' },
+        { field: 'lastName' }
+    ];
+    
     let dataTable = [
-        {make: "VW", model: "Celica", price: 35000},
-        {make: "Ford", model: "Mondeo", price: 32000},
-        {make: "Porsche", model: "Boxster", price: 72000}
+        {id: "VW", firstName: "Celica", lastName: 35000},
+        {id: "Ford", firstName: "Mondeo", lastName: 32000},
+        {id: "Porsche", firstName: "Boxster", lastName: 72000}
     ];
     const [dataT, setData] = useState(dataTable);
+    const [columN, setColumn] = useState(columnsName);
+    
 
-    const makeAction = () => {
-        let dataTableNew = [
-            {make: "Lada", model: "Celica", price: 35000},
-            {make: "Cherry", model: "Mondeo", price: 32000},
-            {make: "Porsche", model: "Boxster", price: 72000}
-        ];
-        setData(dataTableNew);
-        console.log("Hello world");
-        console.log(dataT);
-        takeData();
+    const makeAction = (tableName) => {
+        takeData(tableName).then(myData => {
+            let dataTableNew1 = [];
+            if (tableName == 'authors') {
+                let columnNew = [
+                    { field: 'id' },
+                    { field: 'firstName' },
+                    { field: 'lastName' }
+                ];
+                myData.forEach(element => {
+                    dataTableNew1.push(
+                        {id: element.id, firstName: element.first_name, lastName: element.last_name}
+                    )
+                });
+                console.log("main module", dataTableNew1);
+                setColumn(columnNew);
+                setData(dataTableNew1);
+            } else {
+                let columnNew = [
+                    { field: 'id' },
+                    { field: 'bookname' },
+                    { field: 'author' }
+                ];
+                myData.forEach(element => {
+                    dataTableNew1.push(
+                        {id: element.id, bookname: element.bookname, author: element.author}
+                    )
+                });
+                console.log("main module", dataTableNew1);
+                setColumn(columnNew);
+                setData(dataTableNew1);
+            }
+            
+        });
+        
     }
+
+    // makeAction('authors');
 
     return (
         <UserContext.Provider value={dataT}>
             <div className='container'>
                 <div className='container_button'>
                     <div className='wrap_button'>
-                        <Button variant="contained" className='buttons' onClick={makeAction}>Table 1</Button>
-                        <Button variant="contained" className='buttons'>Table 2</Button>
+                        <Button variant="contained" className='buttons' onClick={() => makeAction('authors')}>Table 1</Button>
+                        <Button variant="contained" className='buttons' onClick={() => makeAction('books')}>Table 2</Button>
                     </div>
                 </div>
-                <AppAg data = {dataT} context={UserContext}/>
+                <AppAg data={dataT} context={UserContext} columsName={columN}/>
 
             </div>
         </UserContext.Provider>
     )
 }
 
-const takeData = async () => {
+const takeData = async (tableName) => {
     try {
-        const response = await fetch("http://localhost:8080/data");
+        let url = window.location.href + "data/" + tableName;
+        console.log("React ", url);
+        const response = await fetch(url);
         const textData = await response.json();
-        console.log("React ", textData);
+        
+        return textData;
       } catch (error) {
         console.error(error);
       }
