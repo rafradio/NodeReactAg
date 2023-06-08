@@ -1,10 +1,9 @@
-
-
-routersApp = function() {
+routersApp = function(connectObj) {
     const express = require('express');
     const bodyParser = require('body-parser')
     const path = require('path');
     const urlAPI = require('./urls');
+    // const objConnect = require('./urls');
 
     const app = express();
 
@@ -12,9 +11,10 @@ routersApp = function() {
 
     // console.log("hello raf", modelsData);
 
-    app.get('/data', async function (req, res) {
-        let dataAPI = await urlAPI.getAPI(res);
-        console.log("hello raf", dataAPI);
+    app.get('/data/:table', async function (req, res) {
+        let dataAPI = await urlAPI.getAPI(res, connectObj, req.params.table);
+        // connectObj.objConnect.checkConnection();
+        // console.log("hello raf", dataAPI);
         return res.send(dataAPI);
     });
 

@@ -1,9 +1,10 @@
-controllerApp = async function() {
+controllerApp =  function() {
     var mainApp = require('../routers/routers');
-    // var modelDB = require('../models/models');
+    var connectObj = require('../models/connectObj');
     // modelsData = await modelDB.connectDB();
     // console.log("Hello max" , modelsData);
-    mainApp.routersApp();
+    // connectObj.objConnect.checkConnection();
+    mainApp.routersApp(connectObj);
     console.log(process.cwd());
 }
 

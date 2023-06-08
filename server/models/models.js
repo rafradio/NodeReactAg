@@ -18,8 +18,8 @@ const connectDB = async function() {
     let authors = modelAutor(sequelize, DataTypes, Model);
     const authorsData = await authors.findAll();
     // console.log("All users:", JSON.stringify(authorsData, null, 2));
-    modelsData = JSON.stringify(authorsData, null, 2);
-    console.log("All users:", modelsData);
+    let modelsData = JSON.stringify(authorsData, null, 2);
+    // console.log("All users:", modelsData);
     return modelsData;
     
 }
