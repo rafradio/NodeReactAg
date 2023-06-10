@@ -1,9 +1,13 @@
 class ObjConnect {
     constructor() {
         const {Sequelize, DataTypes, Model} = require("sequelize");
-        this.sequelize = new Sequelize('nodemysql', 'root', '7783Rafraikk@', {
+        // this.sequelize = new Sequelize('nodemysql', 'root', '7783Rafraikk@', {
+        //     host: 'localhost',
+        //     dialect: 'mysql' 
+        // });
+        this.sequelize = new Sequelize('first', 'postgres', '7783Rafraikk@', {
             host: 'localhost',
-            dialect: 'mysql' 
+            dialect: 'postgres' 
         });
         this.Model = Model;
         this.DataTypes = DataTypes;
@@ -20,7 +24,7 @@ class ObjConnect {
     }
 
     async findAllRecords(tableName) {
-        const modelAutor = require("./" + tableName);
+        const modelAutor = require("../models/" + tableName);
         let authors = modelAutor(this.sequelize, this.DataTypes, this.Model);
         const authorsData = await authors.findAll();
         // console.log("All users:", JSON.stringify(authorsData, null, 2));

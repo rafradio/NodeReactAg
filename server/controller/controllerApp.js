@@ -1,9 +1,9 @@
 controllerApp =  function() {
     var mainApp = require('../routers/routers');
-    var connectObj = require('../models/connectObj');
+    var connectObj = require('./connectObj');
     // modelsData = await modelDB.connectDB();
     // console.log("Hello max" , modelsData);
-    // connectObj.objConnect.checkConnection();
+    connectObj.objConnect.checkConnection();
     mainApp.routersApp(connectObj);
     console.log(process.cwd());
 }

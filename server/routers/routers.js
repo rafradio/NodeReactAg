@@ -1,6 +1,6 @@
 routersApp = function(connectObj) {
     const express = require('express');
-    const bodyParser = require('body-parser')
+    // const bodyParser = require('body-parser')
     const path = require('path');
     const urlAPI = require('./urls');
     // const objConnect = require('./urls');
