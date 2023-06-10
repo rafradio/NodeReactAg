@@ -14,7 +14,7 @@ routersApp = function(connectObj) {
     app.get('/data/:table', async function (req, res) {
         let dataAPI = await urlAPI.getAPI(res, connectObj, req.params.table);
         // connectObj.objConnect.checkConnection();
-        // console.log("hello raf", dataAPI);
+        console.log("hello raf", dataAPI);
         return res.send(dataAPI);
     });
 

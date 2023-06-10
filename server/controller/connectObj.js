@@ -33,6 +33,15 @@ class ObjConnect {
         return modelsData;
 
     }
+
+    async joinRecords() {
+        let queryString = "SELECT U.id, U.bookname, CONCAT(A.last_name, ' ', A.first_name) AS writer " +
+                "FROM books as U " + 
+                "LEFT JOIN authors AS A ON U.author = A.id;";
+        const [results, metadata] = await this.sequelize.query(queryString);
+        console.log(results);
+        return results;
+    }
 }
 
 const objConnect = new ObjConnect();
