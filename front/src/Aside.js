@@ -1,4 +1,4 @@
-import React, { useState, createContext  } from 'react';
+import React, { useState, createContext, useEffect  } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -15,8 +15,8 @@ const UserContext = createContext();
 const AssideMain = (props) => {
     let columnsName = [
         { field: 'id' },
-        { field: 'firstName' },
-        { field: 'lastName' }
+        { field: 'bookName' },
+        { field: 'writer' }
     ];
     
     let dataTable = [
@@ -24,8 +24,37 @@ const AssideMain = (props) => {
         {id: "Ford", firstName: "Mondeo", lastName: 32000},
         {id: "Porsche", firstName: "Boxster", lastName: 72000}
     ];
+
     const [dataT, setData] = useState(dataTable);
     const [columN, setColumn] = useState(columnsName);
+    // const [request, setRequest] = useState('join')
+
+    useEffect(() => {
+        takeData('join').then(myData => {
+            let dataTableNew1 = [];
+            myData.forEach(element => {
+                dataTableNew1.push(
+                    {id: element.id, bookName: element.bookname, writer: element.writer}
+                )
+            });
+            console.log("main module", dataTableNew1);
+            // setColumn(columnNew);
+            setData(dataTableNew1);
+        });
+
+    }, []);
+
+    // takeData(request).then(myData => {
+    //     let dataTableNew1 = [];
+    //     myData.forEach(element => {
+    //         dataTableNew1.push(
+    //             {id: element.id, bookName: element.bookname, writer: element.writer}
+    //         )
+    //     });
+    //     console.log("main module", dataTableNew1);
+    //     // setColumn(columnNew);
+    //     setData(dataTableNew1);
+    // });
     
 
     const makeAction = (tableName) => {
@@ -62,10 +91,12 @@ const AssideMain = (props) => {
             }
             
         });
+
+        // makeAction('join');
         
     }
 
-    // makeAction('authors');
+    // makeAction('join');
 
     return (
         <UserContext.Provider value={dataT}>
@@ -84,16 +115,20 @@ const AssideMain = (props) => {
 }
 
 const takeData = async (tableName) => {
+    // const textData = '';
     try {
         let url = window.location.href + "data/" + tableName;
         console.log("React ", url);
         const response = await fetch(url);
         const textData = await response.json();
-        
         return textData;
-      } catch (error) {
+        
+    } catch (error) {
         console.error(error);
-      }
+    }
+
+    
+
 }
 
 
