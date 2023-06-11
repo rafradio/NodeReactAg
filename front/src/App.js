@@ -50,6 +50,7 @@ const AppAg = (props) => {
                 onGridReady={onGridReady}
                 className="ag-theme-alpine"
                 ref={gridRef}
+                defaultColDef={defaultColDef}
                 animateRows={true}
                 rowData={myData}
                 columnDefs={columsName}>
