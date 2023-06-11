@@ -1,6 +1,9 @@
 module.exports = (sequelize, DataTypes, Model) => {
     class Books extends Model {
       static associate(models) {
+        this.belongsTo(models.Authors, {
+            foreignKey: 'author'
+          })
       }
     }
     
