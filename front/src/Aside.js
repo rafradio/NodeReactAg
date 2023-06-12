@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect  } from 'react';
+import React, { useState, createContext, useEffect, useRef  } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -10,7 +10,6 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import AppAg from './App';
 
-const UserContext = createContext();
 
 const AssideMain = (props) => {
     let columnsName = [
@@ -18,7 +17,8 @@ const AssideMain = (props) => {
         { field: 'bookName' },
         { field: 'writer' }
     ];
-    
+
+
     let dataTable = [];
     // let dataTable = [
     //     {id: "VW", firstName: "Celica", lastName: 35000},
@@ -26,9 +26,10 @@ const AssideMain = (props) => {
     //     {id: "Porsche", firstName: "Boxster", lastName: 72000}
     // ];
 
-    const [dataT, setData] = useState(dataTable);
-    const [columN, setColumn] = useState(columnsName);
-    
+    const [dataT, setDataT] = useState(dataTable);
+    const [columN, setColumN] = useState(columnsName);
+
+    const [tableNameCurrent, setTableNameCurrent] = useState("new");
 
     useEffect(() => {
         takeData('join').then(myData => {
@@ -39,30 +40,32 @@ const AssideMain = (props) => {
                 )
             });
             console.log("main module", dataTableNew1);
-            // setColumn(columnNew);
-            setData(dataTableNew1);
+            setColumN(columnsName);
+            setDataT(dataTableNew1);
+            setTableNameCurrent("join");
         });
 
     }, []);
     
 
     const makeAction = (tableName) => {
+        
         takeData(tableName).then(myData => {
             let dataTableNew1 = [];
             if (tableName == 'authors') {
                 let columnNew = [
                     { field: 'id' },
-                    { field: 'firstName' },
-                    { field: 'lastName' }
+                    { field: 'first_name' },
+                    { field: 'last_name' }
                 ];
                 myData.forEach(element => {
                     dataTableNew1.push(
-                        {id: element.id, firstName: element.first_name, lastName: element.last_name}
+                        {id: element.id, first_name: element.first_name, last_name: element.last_name}
                     )
                 });
-                console.log("main module", dataTableNew1);
-                setColumn(columnNew);
-                setData(dataTableNew1);
+                setColumN(columnNew);
+                setDataT(dataTableNew1);
+                setTableNameCurrent('authors');
             } else {
                 let columnNew = [
                     { field: 'id' },
@@ -74,9 +77,9 @@ const AssideMain = (props) => {
                         {id: element.id, bookname: element.bookname, author: element.author}
                     )
                 });
-                console.log("main module", dataTableNew1);
-                setColumn(columnNew);
-                setData(dataTableNew1);
+                setColumN(columnNew);
+                setDataT(dataTableNew1);
+                setTableNameCurrent('books');
             }
             
         });
@@ -86,18 +89,16 @@ const AssideMain = (props) => {
 
 
     return (
-        <UserContext.Provider value={dataT}>
-            <div className='container'>
-                <div className='container_button'>
-                    <div className='wrap_button'>
-                        <Button variant="contained" className='buttons' onClick={() => makeAction('authors')}>Table 1</Button>
-                        <Button variant="contained" className='buttons' onClick={() => makeAction('books')}>Table 2</Button>
-                    </div>
+        <div className='container'>
+            <div className='container_button'>
+                <div className='wrap_button'>
+                    <Button variant="contained" className='buttons' onClick={() => makeAction('authors')}>Table 1</Button>
+                    <Button variant="contained" className='buttons' onClick={() => makeAction('books')}>Table 2</Button>
                 </div>
-                <AppAg data={dataT} context={UserContext} columsName={columN}/>
-
             </div>
-        </UserContext.Provider>
+            <AppAg data={dataT} columsName={columN} tableName={tableNameCurrent}/>
+
+        </div>
     )
 }
 
