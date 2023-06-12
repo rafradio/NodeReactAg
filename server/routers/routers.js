@@ -18,6 +18,13 @@ routersApp = function(connectObj) {
         return res.send(dataAPI);
     });
 
+    app.get('/edit', async function (req, res) {
+        var url = require('url');
+        var q = url.parse(req.url, true).query;
+        urlAPI.editDB(q, connectObj);
+        return res.send("ok");
+    });
+
     app.get('/ping', function (req, res) {
         return res.send('pong');
     });

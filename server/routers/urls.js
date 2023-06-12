@@ -15,6 +15,12 @@ const getAPI = async function(res, connectObj, tableName) {
     // return data;
 }
 
+const editDB = function(q, connectObj) {
+    connectObj.objConnect.editRecords(q);
+    console.log(q.tableName);
+}
+
 module.exports = {
-    getAPI: getAPI
+    getAPI: getAPI,
+    editDB: editDB
 }

@@ -38,9 +38,24 @@ class ObjConnect {
         let queryString = "SELECT U.id, U.bookname, CONCAT(A.last_name, ' ', A.first_name) AS writer " +
                 "FROM books as U " + 
                 "LEFT JOIN authors AS A ON U.author = A.id;";
-        const [results, metadata] = await this.sequelize.query(queryString);
-        console.log(results);
-        return results;
+        try {
+            const [results, metadata] = await this.sequelize.query(queryString);
+            console.log(results);
+            return results;
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    async editRecords(q) {
+        let queryString = `UPDATE ${q.tableName} SET ${q.column}='${q.newValue}' WHERE id = ${q.id};`
+        try {
+            const [results, metadata] = await this.sequelize.query(queryString);
+        } catch(error) {
+            console.log(error);
+        }
+        
+        // console.log(results);
     }
 }
 
