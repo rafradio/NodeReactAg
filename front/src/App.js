@@ -49,7 +49,27 @@ const AppAg = (props) => {
     if (event.rowPinned != "top") {
       updateDataAtDB(tablename.tableName, rownode.data.id, event.colDef.field, event.newValue);
     } else {
-      console.log("hello pinned row");
+      let oldUrl = window.location.href;
+      let url = new URL(window.location.href + "new");
+      let data = event.data;
+      // if (event.data.id == '') {data.id = 1;}
+      data.tableName = tablename.tableName;
+      console.log("hello pinned row", JSON.stringify(data));
+      fetch(url, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(response => {
+          if (response.ok) {
+            window.location.href = oldUrl;
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        });
     }
     
   }, []);
@@ -103,12 +123,13 @@ const AppAg = (props) => {
   });
 
   const onPinnedRow = useCallback((columsName) => {
-    let rows = [];
+    // let rows = [];
     let data = {};
     columsName.forEach(element => {
       data[element.field] = "";
     });
-    rows.push(data);
+    let rows = new Array(data);
+    // rows.push(data);
     // console.log(data);
     gridRef.current.api.setPinnedTopRowData(rows);
   });
