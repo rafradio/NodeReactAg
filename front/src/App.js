@@ -40,11 +40,18 @@ const AppAg = (props) => {
   const onCellValueChanged = useCallback((event, tablename) => {
  
     let rownode = gridRef.current.api.getRowNode(event.rowIndex);
+    for (let proper in event) {console.log(proper)};
+    // console.log(" pinned " , rownode.rowPinned);
+    // console.log(
+    //   'onCellValueChanged: ' + rownode.data.id + " " + event.colDef.field + ' ' + event.newValue + " " + tablename.tableName
+    // );
+    console.log(event.rowPinned);
+    if (event.rowPinned != "top") {
+      updateDataAtDB(tablename.tableName, rownode.data.id, event.colDef.field, event.newValue);
+    } else {
+      console.log("hello pinned row");
+    }
     
-    console.log(
-      'onCellValueChanged: ' + rownode.data.id + " " + event.colDef.field + ' ' + event.newValue + " " + tablename.tableName
-    );
-    updateDataAtDB(tablename.tableName, rownode.data.id, event.colDef.field, event.newValue);
   }, []);
 
   const updateDataAtDB = (tableName, id, column, newValue) => {
@@ -64,20 +71,46 @@ const AppAg = (props) => {
 
   const onBtStartEditing = useCallback((columsName) => {
     let rownode = gridRef.current.api.getSelectedNodes();
-    let rowIndex = 0;
-    // gridRef.current.api.forEachNode((node, index) => {
-    //   if (node.isSelected) {rowIndex = index}
-    // });
-    // console.log(columsName);
+ 
     gridRef.current.api.startEditingCell({
       rowIndex: rownode[0].rowIndex,
       colKey: columsName[1].field,
     });
-    console.log(rownode[0].rowIndex);
-    // for (let propert in rownode[0]) {console.log(propert)};
+
+
   },[]);
 
-  const onBtStopEditing = useCallback(() => {
+  const onBtDeleting = useCallback((tableName) => {
+    let rownode = gridRef.current.api.getSelectedRows();
+    // console.log(rownode.length, " ");
+    // for (let proper in rownode[0]) {console.log(proper)};
+
+    if (rownode.length > 0) {
+      let oldURL = window.location.href;
+      let url = new URL(window.location.href + "delete");
+      url.searchParams.set('tableName', tableName.tableName);
+      url.searchParams.append('id', rownode[0].id);
+      fetch(url)
+        .then(response => {
+          if (response.ok) {
+            window.location.href = oldURL;
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        });
+    }
+  });
+
+  const onPinnedRow = useCallback((columsName) => {
+    let rows = [];
+    let data = {};
+    columsName.forEach(element => {
+      data[element.field] = "";
+    });
+    rows.push(data);
+    // console.log(data);
+    gridRef.current.api.setPinnedTopRowData(rows);
   });
 
   
@@ -89,8 +122,11 @@ const AppAg = (props) => {
           <button style={{ fontSize: '12px' }} onClick={() => onBtStartEditing(columsName)}>
             Редактировать
           </button>
-          <button style={{ fontSize: '12px' }} onClick={onBtStopEditing}>
+          <button style={{ fontSize: '12px' }} onClick={() => onBtDeleting({tableName})}>
             Удалить
+          </button>
+          <button style={{ fontSize: '12px' }} onClick={() => onPinnedRow(columsName)}>
+            Добавить запись
           </button>
         </div>
         }
