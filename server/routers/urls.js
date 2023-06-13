@@ -20,7 +20,13 @@ const editDB = function(q, connectObj) {
     console.log(q.tableName);
 }
 
+const deleteRowDB = function(q, connectObj) {
+    connectObj.objConnect.deleteRecord(q);
+    console.log(q.tableName, " Удаление ", q.id);
+}
+
 module.exports = {
     getAPI: getAPI,
-    editDB: editDB
+    editDB: editDB,
+    deleteRowDB: deleteRowDB
 }
