@@ -29,7 +29,7 @@ class ObjConnect {
         const curentData = await currentModel.findAll();
         // console.log("All users:", JSON.stringify(authorsData, null, 2));
         let modelsData = JSON.stringify(curentData, null, 2);
-        console.log("All users:", modelsData);
+        // console.log("All users:", modelsData);
         return modelsData;
 
     }
@@ -40,7 +40,7 @@ class ObjConnect {
                             "LEFT JOIN authors AS A ON U.author = A.id;";
         try {
             const [results, metadata] = await this.sequelize.query(queryString);
-            console.log(results);
+            // console.log(results);
             return results;
         } catch(error) {
             console.log(error);
@@ -66,6 +66,30 @@ class ObjConnect {
         });
         if (row) { await row.destroy();};
 
+    }
+
+    async addRecord(data) {
+        const modelAutor = require("../models/" + data.tableName);
+        let inserData = {};
+        for (let prop in data) {
+            if (prop != "tableName" && prop != "id") {
+                if (data[prop] == '') {
+                    inserData[prop] = 1;
+                } else {
+                    inserData[prop] = data[prop];
+                }
+            }
+        }
+        // inserData.id = 1;
+        let currentModel = modelAutor(this.sequelize, this.DataTypes, this.Model);
+        console.log(inserData);
+        try {
+            // const newRec = User.build(inserData);
+            // await newRec.save();
+            await currentModel.create(inserData);
+        } catch(error) {
+            console.log(error);
+        }
     }
 }
 
