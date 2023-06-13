@@ -96,7 +96,7 @@ const AssideMain = (props) => {
                     <Button variant="contained" className='buttons' onClick={() => makeAction('books')}>Table 2</Button>
                 </div>
             </div>
-            <AppAg data={dataT} columsName={columN} tableName={tableNameCurrent}/>
+            <AppAg data={dataT} columsName={columN} tableName={tableNameCurrent} makeAction={makeAction}/>
 
         </div>
     )

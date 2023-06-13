@@ -22,6 +22,7 @@ const AppAg = (props) => {
   let columsName = props.columsName;
   let tableName = props.tableName;
   let myData = props.data;
+  const makeAction = props.makeAction;
 
 
   const defaultColDef = useMemo(() => {
@@ -37,7 +38,7 @@ const AppAg = (props) => {
     gridRef.current.api.showLoadingOverlay();
   }, []);
 
-  const onCellValueChanged = useCallback((event, tablename) => {
+  const onCellValueChanged = useCallback((event, tablename, makeAction) => {
  
     let rownode = gridRef.current.api.getRowNode(event.rowIndex);
     for (let proper in event) {console.log(proper)};
@@ -48,6 +49,7 @@ const AppAg = (props) => {
     console.log(event.rowPinned);
     if (event.rowPinned != "top") {
       updateDataAtDB(tablename.tableName, rownode.data.id, event.colDef.field, event.newValue);
+      makeAction(tablename.tableName);
     } else {
       let oldUrl = window.location.href;
       let url = new URL(window.location.href + "new");
@@ -64,7 +66,11 @@ const AppAg = (props) => {
         })
         .then(response => {
           if (response.ok) {
-            window.location.href = oldUrl;
+            let rows = [];
+            gridRef.current.api.setPinnedTopRowData(rows);
+            makeAction(tablename.tableName);
+
+            // window.location.href = oldUrl;
           }
         })
         .catch((error) => {
@@ -100,7 +106,7 @@ const AppAg = (props) => {
 
   },[]);
 
-  const onBtDeleting = useCallback((tableName) => {
+  const onBtDeleting = useCallback((tableName, makeAction) => {
     let rownode = gridRef.current.api.getSelectedRows();
     // console.log(rownode.length, " ");
     // for (let proper in rownode[0]) {console.log(proper)};
@@ -113,7 +119,8 @@ const AppAg = (props) => {
       fetch(url)
         .then(response => {
           if (response.ok) {
-            window.location.href = oldURL;
+            makeAction(tableName.tableName);
+            // window.location.href = oldURL;
           }
         })
         .catch((error) => {
@@ -123,14 +130,13 @@ const AppAg = (props) => {
   });
 
   const onPinnedRow = useCallback((columsName) => {
-    // let rows = [];
+
     let data = {};
     columsName.forEach(element => {
       data[element.field] = "";
     });
     let rows = new Array(data);
-    // rows.push(data);
-    // console.log(data);
+
     gridRef.current.api.setPinnedTopRowData(rows);
   });
 
@@ -143,7 +149,7 @@ const AppAg = (props) => {
           <button style={{ fontSize: '12px' }} onClick={() => onBtStartEditing(columsName)}>
             Редактировать
           </button>
-          <button style={{ fontSize: '12px' }} onClick={() => onBtDeleting({tableName})}>
+          <button style={{ fontSize: '12px' }} onClick={() => onBtDeleting({tableName}, makeAction)}>
             Удалить
           </button>
           <button style={{ fontSize: '12px' }} onClick={() => onPinnedRow(columsName)}>
@@ -160,7 +166,7 @@ const AppAg = (props) => {
                 defaultColDef={defaultColDef}
                 animateRows={true}
                 editType={'fullRow'}
-                onCellValueChanged={(event) => onCellValueChanged(event, {tableName})}
+                onCellValueChanged={(event) => onCellValueChanged(event, {tableName}, makeAction)}
                 rowData={myData}
                 columnDefs={columsName}
                 rowSelection={'single'}>
