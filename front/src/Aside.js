@@ -89,16 +89,19 @@ const AssideMain = (props) => {
 
 
     return (
-        <div className='container'>
-            <div className='container_button'>
-                <div className='wrap_button'>
-                    <Button variant="contained" className='buttons' onClick={() => makeAction('authors')}>Table 1</Button>
-                    <Button variant="contained" className='buttons' onClick={() => makeAction('books')}>Table 2</Button>
-                </div>
-            </div>
-            <AppAg data={dataT} columsName={columN} tableName={tableNameCurrent} makeAction={makeAction}/>
+        <React.Fragment>
+        <CssBaseline />
+            <Box component="div" className='container'>
+                <Box component="div" className='container_button'>
+                    <Box component="div" maxWidth="sm" className='wrap_button'>
+                        <Button variant="contained" className='buttons' onClick={() => makeAction('authors')}>Table 1</Button>
+                        <Button variant="contained" className='buttons' onClick={() => makeAction('books')}>Table 2</Button>
+                    </Box>
+                </Box>
+                <AppAg data={dataT} columsName={columN} tableName={tableNameCurrent} makeAction={makeAction}/>
 
-        </div>
+            </Box>
+        </React.Fragment>
     )
 }
 

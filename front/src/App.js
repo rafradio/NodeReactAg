@@ -4,6 +4,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import './stylesAg.css';
 import { CellClickedEvent } from "ag-grid-community";
+import Box from '@mui/material/Box';
 
 
 
@@ -127,21 +128,21 @@ const AppAg = (props) => {
   
 
   return (
-      <div className='container_grid'>
+      <Box component="div" className='container_grid'>
         {tableName != 'join' &&
-        <div style={{ marginBottom: '5px' }}>
-          <button style={{ fontSize: '12px' }} onClick={() => onBtStartEditing(columsName)}>
-            Редактировать
-          </button>
-          <button style={{ fontSize: '12px' }} onClick={() => onBtDeleting({tableName}, makeAction)}>
-            Удалить
-          </button>
-          <button style={{ fontSize: '12px' }} onClick={() => onPinnedRow(columsName)}>
-            Добавить запись
-          </button>
-        </div>
+          <Box component="div" style={{ marginBottom: '5px' }}>
+            <button style={{ fontSize: '12px' }} onClick={() => onBtStartEditing(columsName)}>
+              Редактировать
+            </button>
+            <button style={{ fontSize: '12px' }} onClick={() => onBtDeleting({tableName}, makeAction)}>
+              Удалить
+            </button>
+            <button style={{ fontSize: '12px' }} onClick={() => onPinnedRow(columsName)}>
+              Добавить запись
+            </button>
+          </Box>
         }
-        <div className="ag-theme-alpine grid_style" style={{height: 400, width: 600}}>
+        <Box component="div" className="ag-theme-alpine grid_style" style={{height: 400, width: 600}}>
             <AgGridReact
                 onCellClicked={onCellClicked}
                 onGridReady={onGridReady}
@@ -155,8 +156,8 @@ const AppAg = (props) => {
                 columnDefs={columsName}
                 rowSelection={'single'}>
             </AgGridReact>
-        </div>
-      </div>
+        </Box>
+      </Box>
   );
 };
 
