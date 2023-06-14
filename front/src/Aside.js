@@ -65,7 +65,7 @@ const AssideMain = (props) => {
                 });
                 setColumN(columnNew);
                 setDataT(dataTableNew1);
-                setTableNameCurrent('authors');
+                setTableNameCurrent(tableName);
             } else {
                 let columnNew = [
                     { field: 'id' },
@@ -79,7 +79,7 @@ const AssideMain = (props) => {
                 });
                 setColumN(columnNew);
                 setDataT(dataTableNew1);
-                setTableNameCurrent('books');
+                setTableNameCurrent(tableName);
             }
             
         });

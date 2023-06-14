@@ -4,12 +4,6 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import './stylesAg.css';
 import { CellClickedEvent } from "ag-grid-community";
-import { Button } from '@mui/material';
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import AssideMain from "./Aside.js"
 
 
 
@@ -41,8 +35,7 @@ const AppAg = (props) => {
   const onCellValueChanged = useCallback((event, tablename, makeAction) => {
  
     let rownode = gridRef.current.api.getRowNode(event.rowIndex);
-    for (let proper in event) {console.log(proper)};
-    // console.log(" pinned " , rownode.rowPinned);
+    // for (let proper in event) {console.log(proper)};
     // console.log(
     //   'onCellValueChanged: ' + rownode.data.id + " " + event.colDef.field + ' ' + event.newValue + " " + tablename.tableName
     // );
@@ -51,7 +44,6 @@ const AppAg = (props) => {
       updateDataAtDB(tablename.tableName, rownode.data.id, event.colDef.field, event.newValue);
       makeAction(tablename.tableName);
     } else {
-      let oldUrl = window.location.href;
       let url = new URL(window.location.href + "new");
       let data = event.data;
       // if (event.data.id == '') {data.id = 1;}
@@ -69,8 +61,6 @@ const AppAg = (props) => {
             let rows = [];
             gridRef.current.api.setPinnedTopRowData(rows);
             makeAction(tablename.tableName);
-
-            // window.location.href = oldUrl;
           }
         })
         .catch((error) => {
@@ -81,7 +71,6 @@ const AppAg = (props) => {
   }, []);
 
   const updateDataAtDB = (tableName, id, column, newValue) => {
-    // let str = window.location.href + "edit";
     let url = new URL(window.location.href + "edit");
     url.searchParams.set('tableName', tableName);
     url.searchParams.append('id', id);
@@ -108,11 +97,7 @@ const AppAg = (props) => {
 
   const onBtDeleting = useCallback((tableName, makeAction) => {
     let rownode = gridRef.current.api.getSelectedRows();
-    // console.log(rownode.length, " ");
-    // for (let proper in rownode[0]) {console.log(proper)};
-
     if (rownode.length > 0) {
-      let oldURL = window.location.href;
       let url = new URL(window.location.href + "delete");
       url.searchParams.set('tableName', tableName.tableName);
       url.searchParams.append('id', rownode[0].id);
@@ -120,7 +105,6 @@ const AppAg = (props) => {
         .then(response => {
           if (response.ok) {
             makeAction(tableName.tableName);
-            // window.location.href = oldURL;
           }
         })
         .catch((error) => {
