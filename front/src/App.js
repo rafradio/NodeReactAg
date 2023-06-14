@@ -18,6 +18,7 @@ const AppAg = (props) => {
   let tableName = props.tableName;
   let myData = props.data;
   const makeAction = props.makeAction;
+  
 
 
   const defaultColDef = useMemo(() => {
@@ -154,6 +155,7 @@ const AppAg = (props) => {
                 onCellValueChanged={(event) => onCellValueChanged(event, {tableName}, makeAction)}
                 rowData={myData}
                 columnDefs={columsName}
+                // rowModelType={'infinite'}
                 rowSelection={'single'}>
             </AgGridReact>
         </Box>
