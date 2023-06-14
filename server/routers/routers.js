@@ -36,10 +36,6 @@ routersApp = function(connectObj) {
         res.redirect('/');
     });
 
-    // app.get('/user', function (req, res) {
-    //     res.redirect('/');
-    // });
-
     app.post('/new', function (req, res) {
         let data = req.body;
         console.log("post request ",  data, req.url);
@@ -47,14 +43,6 @@ routersApp = function(connectObj) {
         res.send('ok');
     });
      
-    // app.get('/user', function (req, res) {
-    //     res.send("Redirected to User Page");
-    // });
-
-    // app.get('/ping', function (req, res) {
-    //     return res.send('pong');
-    // });
-
     
 
     const PORT = 8080;
