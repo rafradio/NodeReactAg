@@ -9,8 +9,12 @@
     > npm run build  - устанавливает зависимости React части и строит React приложение<br>
 
 * init-db.sql  -  sql запросы для первоначальных данных
-    > имя database - first установить самостоятельно<br>
     > БД - PostgreSQL<br>
+    > имя database - first установить самостоятельно<br>
+    > команды:
+    >> DROP DATABASE IF EXISTS first;<br>
+    >> CREATE DATABASE first;<br>
+    >> USE first;<br>
 
 * Запуск приложение из корневого каталога:
     > node index
