@@ -1,6 +1,6 @@
 class ObjConnect {
     constructor() {
-        const {Sequelize, DataTypes, Model} = require("sequelize");
+        const {Sequelize, DataTypes, Model, QueryTypes} = require("sequelize");
         // this.sequelize = new Sequelize('nodemysql', 'root', '7783Rafraikk@', {
         //     host: 'localhost',
         //     dialect: 'mysql' 
@@ -11,6 +11,7 @@ class ObjConnect {
         });
         this.Model = Model;
         this.DataTypes = DataTypes;
+        this.querytypes = QueryTypes;
         
     }
 
@@ -48,9 +49,16 @@ class ObjConnect {
     }
 
     async editRecords(q) {
-        let queryString = `UPDATE ${q.tableName} SET ${q.column}='${q.newValue}' WHERE id = ${q.id};`
+        // let queryString = `UPDATE ${q.tableName} SET ${q.column}='${q.newValue}' WHERE id = ${q.id};`
+        let queryString = `UPDATE ${q.tableName} SET ${q.column}=? WHERE id=?;`
         try {
-            const [results, metadata] = await this.sequelize.query(queryString);
+            const [results, metadata] = await this.sequelize.query(
+                        queryString,
+                        {
+                            replacements: [q.newValue, q.id],
+                            type: this.querytypes.UPDATE
+                        }
+            );
         } catch(error) {
             console.log(error);
         }
